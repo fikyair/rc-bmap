@@ -13,14 +13,20 @@ class AutoComplete {
     const {
       input,
       events,
+      value,
+      location,
       searchComplete,
     } = this.props;
 
     this.instance = new global.BMap.Autocomplete({
       input,
-      location: this.map,
+      location: location || this.map,
       onSearchComplete: searchComplete,
     });
+
+    if (value) {
+      this.instance.setInputValue(value);
+    }
 
     bindEvents(this.instance, 'AUTO_COMPLETE', events);
   }
@@ -32,7 +38,9 @@ class AutoComplete {
   }
 
   destroy = () => {
-    this.instance.dispose();
+    if (this.instance.dispose) {
+      this.instance.dispose();
+    }
   }
 }
 
